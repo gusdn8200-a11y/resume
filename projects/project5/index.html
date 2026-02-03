@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 5</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <header>
+        <h1>logo</h1>
+        <ul id="gnb">
+            <li><a href="#">Sea</a></li>
+            <li><a href="#">Land</a></li>
+            <li><a href="#">Air</a></li>
+            <li><a href="#">Space</a></li>
+            <li><a href="#">Lattice</a></li>
+            <li><a href="#">Arsenal-1</a></li>
+        </ul>
+        <div class="snsset">
+            <a href="#"><img src="./img/sns1.png" alt="1"></a>
+            <a href="#"><img src="./img/sns2.png" alt="1"></a>
+            <a href="#"><img src="./img/sns3.png" alt="1"></a>
+            <a href="#"><img src="./img/sns4.png" alt="1"></a>
+            <a href="#"><img src="./img/sns5.png" alt="1"></a>
+        </div>
+    </header>
+    <nav>
+        <a href="#"><img src="img/util1.png" alt="1"></a>
+        <a href="#"><img src="img/util2.png" alt="1"></a>
+        <a href="#"><img src="img/util3.png" alt="1"></a>
+        <a href="#"><img src="img/util4.png" alt="1"></a>
+    </nav>
+    <section>
+        <article>			
+			<div class="bg bg1" data-video="img2/s1_v.mp4">		
+				<span>Barracuda</span>
+			</div>			
+		</article>
+		
+		<article>		
+			<div class="txt">
+				<i class="fa fa-arrow-right"></i>
+				<p>
+					<strong>Autonomous Air Vehicle</strong><br />
+					<em>A family of air-breathing autonomous vehicles (AAVs), purpose-built for hyper-scale production and rapid deployment.</em>
+				</p>
+			</div>	
+		</article>
+		
+		<article>			
+			<div class="txt">	
+				<i class="fa fa-spin fa-refresh"></i>
+				<p><strong>Reservations</strong></p>
+			</div>	
+		</article>
+		
+		<article>
+			<div class="bg bg2">
+				<span>Suite</span>
+			</div>	
+		</article>
+		
+		<article>
+			<div class="bg bg3" data-video="img2/s4_v.mp4">
+				<span>Lattice</span>
+			</div>	
+		</article>
+		
+		<article>	
+			<div class="txt">	
+				<i class="fa fa-arrow-right"></i>
+				<p>
+					<strong>Roadrunner</strong><br />
+					<em>Roadrunner is a reusable vertical take-off and landing (VTOL), operator-supervised autonomous air vehicle (AAV) with twin turbojet engines and modular payload configurations for a wide range of missions.</em>
+				</p>
+			</div>	
+		</article>
+		
+		<article>
+			<div class="bg bg4" data-video="img2/s5_v.mp4">
+				<span>Fury</span>
+			</div>
+		</article>
+		
+		<article>	
+			<div class="txt">	
+				<i class="fa fa-arrow-right"></i>
+				<strong>Fury</strong><br />
+				<em>Leveraging Lattice software, Fury accelerates the development, testing, and fielding of mission autonomy, delivering an unfair advantage and credible deterrence.</em>
+			</div>	
+		</article>
+		
+		<article>		
+			<div class="bg bg5" data-video="img2/s1_v.mp4">
+				<span>Ghost</span>
+			</div>
+		</article>
+		
+		<article>	
+			<div class="bg bg6" data-video="img2/s7_v.mp4">
+				<span>Dive-XL</span>
+			</div>	
+		</article>
+		
+		<article>
+			<div class="txt">	
+				<i class="fa fa-arrow-right"></i>
+				<p>
+					<strong>Dive-XL</strong><br />
+					<em>Dive-XL integrates multiple large payloads for defense or commercial missions that require long distances, extended durations, and variable depths.</em>
+				</p>
+			</div>	
+		</article>
+		
+		<article>	
+			<div class="bg bg7" data-video="img2/s6_v.mp4">
+				<span>Menace-X</span>
+			</div>		
+		</article>
+    </section>
+
+	<div class="video-modal" id="videoModal" aria-hidden="true">
+		<div class="video-modal__backdrop" data-close="modal"></div>
+		<div class="video-modal__content" role="dialog" aria-modal="true" aria-label="Video">
+			<button class="video-modal__close" type="button" data-close="modal">닫기</button>
+			<video id="modalVideo" controls playsinline></video>
+		</div>
+	</div>
+
+	<script src="./js/index.js"></script>
+	<script src="./js/dev-egg.js"></script>
+</body>
+</html>

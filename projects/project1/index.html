@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project 1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/index.css" />
+  <script src="./js/dev-egg.js"></script>
+</head>
+
+<body>
+  
+  <header class="header">
+    <div class="header-inner">
+      <a class="header-logo" href="/" aria-label="홈">
+        <span class="logo-mark"><img src="./img/logo.svg" alt=""></span>
+      </a>
+
+      <nav class="header-actions" aria-label="헤더 동작">
+        <button class="icon-button" type="button" aria-label="검색">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M10 18a8 8 0 1 1 5.3-14 8 8 0 0 1-5.3 14Zm0-2a6 6 0 1 0 0-12 6 6 0 0 0 0 12Zm10.7 4.7-5.2-5.2 1.4-1.4 5.2 5.2-1.4 1.4Z"/>
+          </svg>
+        </button>
+
+        <button class="icon-button" type="button" aria-label="장바구니">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 7V6a5 5 0 0 1 10 0v1h3v15H4V7h3Zm2 0h6V6a3 3 0 0 0-6 0v1Z"/>
+          </svg>
+        </button>
+
+        <button class="login-btn" type="button">로그인</button>
+
+        
+        <button class="icon-button" type="button" aria-label="메뉴" data-menu-toggle>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 7h16v2H4V7Zm0 6h16v2H4v-2Zm0 6h16v2H4v-2Z"/>
+          </svg>
+        </button>
+      </nav>
+    </div>
+
+    
+    <aside class="menu-panel" aria-hidden="true" id="menuPanel">
+      <div class="menu-top">
+        <button class="icon-button" type="button" aria-label="검색">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M10 18a8 8 0 1 1 5.3-14 8 8 0 0 1-5.3 14Zm0-2a6 6 0 1 0 0-12 6 6 0 0 0 0 12Zm10.7 4.7-5.2-5.2 1.4-1.4 5.2 5.2-1.4 1.4Z"/>
+          </svg>
+        </button>
+
+        <button class="icon-button" type="button" aria-label="장바구니">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 7V6a5 5 0 0 1 10 0v1h3v15H4V7h3Zm2 0h6V6a3 3 0 0 0-6 0v1Z"/>
+          </svg>
+        </button>
+
+        <button class="login-btn" type="button">로그인</button>
+
+      </div>
+
+      <nav class="menu-nav" aria-label="사이트 메뉴">
+        <a class="menu-item is-current" href="#">홈</a>
+        <a class="menu-item" href="#">쇼핑</a>
+        <a class="menu-item" href="#">소개</a>
+        <a class="menu-item" href="#">문의</a>
+      </nav>
+
+    </aside>
+  </header>
+
+  <section class="carousel">
+    <button class="carousel-arrow carousel-arrow--prev" type="button" aria-label="이전 슬라이드" data-carousel-prev>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M15.7 5.3 9 12l6.7 6.7-1.4 1.4L6.2 12l8.1-8.1 1.4 1.4Z"/>
+      </svg>
+    </button>
+
+    <div class="carousel-track">
+      <article class="carousel-slide carousel-slide--1">
+        <div class="carousel-content">
+          <h2>JINRO<br> 청포도</h2>
+          <p>진로 청포도 소주 – 달콤하고 과일 향 가득한 한국의 술</p>
+          <button class="cta-btn">지금 구매</button>
+        </div>
+        <div class="carousel-visual">
+          <img src="./img/s1.webp" alt="Chair" />
+        </div>
+      </article>
+
+      <article class="carousel-slide carousel-slide--2">
+        <div class="carousel-content">
+          <h2>JINRO<br> 자두</h2>
+          <p>진로 자두 소주 – 부드럽고 달콤한 정통 맛</p>
+          <button class="cta-btn">지금 구매</button>
+        </div>
+        <div class="carousel-visual">
+          <img src="./img/s2.webp" alt="Sofa" />
+        </div>
+      </article>
+
+      <article class="carousel-slide carousel-slide--3">
+        <div class="carousel-content">
+          <h2>JINRO<br> 복숭아</h2>
+          <p>진로 복숭아 소주 – 과즙 같은 달콤함과 부드러운 풍미</p>
+          <button class="cta-btn">지금 구매</button>
+        </div>
+        <div class="carousel-visual">
+          <img src="./img/s3.webp" alt="Item" />
+        </div>
+      </article>
+
+      <article class="carousel-slide carousel-slide--4">
+        <div class="carousel-content">
+          <h2>JINRO <br> 자몽</h2>
+          <p>진로 자몽 소주 – 상큼한 한국식 시트러스 풍미</p>
+          <button class="cta-btn">지금 구매</button>
+        </div>
+        <div class="carousel-visual">
+          <img src="./img/s4.webp" alt="Chair" />
+        </div>
+      </article>
+
+      <article class="carousel-slide carousel-slide--5">
+        <div class="carousel-content">
+          <h2>JINRO <br>레몬</h2>
+          <p>진로 레몬 소주 – 깔끔하고 상쾌한 시트러스 맛</p>
+          <button class="cta-btn">지금 구매</button>
+        </div>
+        <div class="carousel-visual">
+          <img src="./img/s5.webp" alt="Sofa" />
+        </div>
+      </article>
+
+      <article class="carousel-slide carousel-slide--6">
+        <div class="carousel-content">
+          <h2>JINRO <br>딸기</h2>
+          <p>진로 딸기 소주 – 풍부한 과일 향의 한국 술</p>
+          <button class="cta-btn">지금 구매</button>
+        </div>
+        <div class="carousel-visual">
+          <img src="./img/s6.webp" alt="Item" />
+        </div>
+      </article>
+    </div>
+
+    <button class="carousel-arrow carousel-arrow--next" type="button" aria-label="다음 슬라이드" data-carousel-next>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m8.3 18.7 6.7-6.7-6.7-6.7 1.4-1.4L17.8 12l-8.1 8.1-1.4-1.4Z"/>
+      </svg>
+    </button>
+  </section>
+
+  <section class="intro-copy float-host">
+    <h2>세계 판매 1위 소주 브랜드, 진로. 한국의 술을 증류한 지 100년이 넘었습니다.</h2>
+    <p>진로가 한국의 술을 처음 증류한 지 100년이 넘었습니다. 오늘도 우리는 한국인이 가장 사랑하는 소주입니다.</p>
+    <img class="side-float side-float--1 is-left" src="./img/s_m1.webp" alt="캐릭터 이미지 1" />
+  </section>
+
+  <section class="product-row float-host">
+    <div class="product-row__inner">
+      <header class="product-row__head">
+        <p>진로 제품</p>
+        <h2>나만의 맛을 찾아보세요</h2>
+      </header>
+      <img class="side-float side-float--2 is-right" src="./img/s_m2.webp" alt="캐릭터 이미지 2" />
+
+      <div class="product-row__grid">
+        <article class="product-card">
+          <div class="product-card__media">
+            <img src="./img/c1.webp" alt="Jinro Lemon" />
+          </div>
+          <div class="product-card__body">
+            <h3>일품진로</h3>
+            <p class="product-card__abv">25%</p>
+            <p class="product-card__desc">농후하고 고급스러운 맛</p>
+            <button class="product-card__btn" type="button">제품 보기</button>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <div class="product-card__media">
+            <img src="./img/c2.webp" alt="Jinro 24" />
+          </div>
+          <div class="product-card__body">
+            <h3>JINRO 24</h3>
+            <p class="product-card__abv">24%</p>
+            <p class="product-card__desc">진하고 부드러운 맛, 깊은 풍미</p>
+            <button class="product-card__btn" type="button">제품 보기</button>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <div class="product-card__media">
+            <img src="./img/c3.webp" alt="Jinro Original" />
+          </div>
+          <div class="product-card__body">
+            <h3>ORIGINAL</h3>
+            <p class="product-card__abv">20.1%</p>
+            <p class="product-card__desc">클래식한 바디감, 전통의 맛</p>
+            <button class="product-card__btn" type="button">제품 보기</button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="story float-host">
+    <img class="side-float side-float--3 is-left" src="./img/s_m3.webp" alt="캐릭터 이미지 3" />
+    <img class="side-float side-float--4 is-right" src="./img/s_m4.webp" alt="캐릭터 이미지 4" />
+    <div class="story-item">
+      
+      <div class="story-left">
+        <p>소주와 사케는 비슷해 보이지만, 서로 다른 문화와 전통 속에서 만들어진 전혀 다른 술입니다.</p>
+      </div>
+
+      
+      <div class="story-media">
+        <img src="./img/s2_1.jpg" alt="">
+      </div>
+
+      
+      <div class="story-right">
+        <p>소주 vs 사케: 무엇이 다른가, <br>그리고 내 잔에 어울리는 것은?</p>
+      </div>
+    </div>
+    <div class="story-item" data-direction="reverse">
+      
+      <div class="story-left">
+        <p>‘솔로커뮤니티’의 부상: 혼자 마셔도 외롭지 않은 시대</p>
+      </div>
+
+      
+      <div class="story-media">
+        <img src="./img/s2_2.png" alt="">
+      </div>
+
+      
+      <div class="story-right">
+        <p>더 많은 사람들이 고독이 아닌 편안함 속에서 <br>혼자만의 시간을 즐깁니다. <br> 이런 라이프스타일이 점점 확산되고 있습니다.</p>
+      </div>
+    </div>
+    <div class="story-item">
+      
+      <div class="story-left">
+        <p>진로 청포도, 복숭아, 딸기 중 무엇을 고를지는 취향의 문제입니다. 각기 다른 달콤함과 향을 지녀 어떤 자리에서도 내게 맞는 맛을 찾기 쉽습니다.</p>
+      </div>
+
+      
+      <div class="story-media">
+        <img src="./img/s2_3.png" alt="">
+      </div>
+
+      
+      <div class="story-right">
+        <p>맛 대결: 청포도, 복숭아, 딸기</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="lineup float-host">
+  <img class="side-float side-float--5 is-left" src="./img/s_m5.webp" alt="캐릭터 이미지 5" />
+  <div class="lineup-wrap">
+    <ul class="lineup-list" aria-label="Benefits list">
+      <li>
+        <button class="lineup-item is-current" data-img="./img/c1.webp">
+          진로 일품(알코올 25.0%)
+        </button>
+      </li>
+      <li>
+        <button class="lineup-item" data-img="./img/c2.webp">
+          진로 24 (알코올 24.0%)
+        </button>
+      </li>
+      <li>
+        <button class="lineup-item" data-img="./img/c3.webp">
+          진로 참이슬 오리지널(알코올 20.1%)
+        </button>
+      </li>
+    </ul>
+
+    <figure class="lineup-preview">
+      <img id="lineupPreview" src="./img/c1.webp" alt="Benefit preview" />
+    </figure>
+  </div>
+</section>
+
+  <section class="gallery float-host">
+    <h2 class="gallery-title">뉴스레터</h2>
+    <img class="side-float side-float--6 is-right" src="./img/s_m6.webp" alt="캐릭터 이미지 6" />
+    <div class="gallery-grid">
+      <img src="./img/s4_1.jpg" alt="Gallery 1">
+      <img src="./img/s4_2.jpg" alt="Gallery 2">
+      <img src="./img/s4_3.jpg" alt="Gallery 3">
+      <img src="./img/s4_4.jpg" alt="Gallery 4">
+      <img src="./img/s4_5.jpg" alt="Gallery 5">
+      <img src="./img/s4_6.jpg" alt="Gallery 6">
+      <img src="./img/s4_7.jpg" alt="Gallery 7">
+      <img src="./img/s4_8.webp" alt="Gallery 8">
+      <img src="./img/s4_9.webp" alt="Gallery 9">
+      <img src="./img/s4_10.webp" alt="Gallery 10">
+      <img src="./img/s4_11.webp" alt="Gallery 11">
+      <img src="./img/s4_12.webp" alt="Gallery 12">
+    </div>
+  </section>
+
+<footer class="footer">
+  <div class="footer-grid">
+    
+    <div class="footer-block footer-block--brand">
+      <div class="footer-mark"><img src="./img/logo.svg" alt=""></div>
+      </p>
+    </div>
+
+    
+    <div class="footer-block footer-block--contact">
+      <p>support@dopegood.com</p>
+      <p>+716 704 9295</p>
+      <p>NY 10461 - NEW YORK.</p>
+    </div>
+
+    
+    <div class="footer-block">
+      <a href="#">회사 소개</a>
+      <a href="#">개인정보 처리방침</a>
+      <a href="#">이용약관</a>
+    </div>
+
+    
+    <div class="footer-block footer-block--news">
+      <nav class="footer-socials" aria-label="SNS">
+        <a class="footer-social" href="#" aria-label="SNS 1">
+          <img src="./img/sns1.svg" alt="SNS 1" />
+        </a>
+        <a class="footer-social" href="#" aria-label="SNS 2">
+          <img src="./img/sns2.svg" alt="SNS 2" />
+        </a>
+        <a class="footer-social" href="#" aria-label="SNS 3">
+          <img src="./img/sns3.svg" alt="SNS 3" />
+        </a>
+        <a class="footer-social" href="#" aria-label="SNS 4">
+          <img src="./img/sns4.svg" alt="SNS 4" />
+        </a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+  
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="./js/index.js"></script>
+</body>
+</html>

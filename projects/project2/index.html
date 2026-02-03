@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Project 2</title>
+  <link rel="stylesheet" href="./css/style.css" />
+
+  <script defer src="https://cdn.jsdelivr.net/npm/pixi.js@7.4.2/dist/pixi.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script defer src="./js/script.js"></script>
+</head>
+<body class="list">
+
+  <div id="app">
+    <header class="bar">
+      <div class="brand">
+        <h1 class="brand-text">
+          <img src="./img/logo-typo.svg" alt="SQUARE">
+        </h1>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="menuBtn" type="button" aria-label="Menu">
+          <span class="bars" aria-hidden="true"></span>
+        </button>
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="left">
+        <div id="preview" aria-label="Preview">
+          <div id="pixi"></div>
+          <img id="fallback" src="./img/001.png" alt="Preview">
+
+        </div>
+      </section>
+
+      <aside class="right">
+        <div class="items" id="items" aria-label="Projects list">
+        </div>
+      </aside>
+    </main>
+
+    <div id="gallery"></div>
+
+    <div id="detail">
+      <h2 id="dTitle">LA NUIT</h2>
+      <h3 id="dSub">lip conditioner 101(립 컨디셔너 101)</h3>
+      <p id="dDesc">시간과 성별의 경계를 넘어, 모든 입술을 위한 정제된 포뮬러. 시어버터와 망고씨버터의 풍부한 영양을 시작으로, 메도우폼·해바라기씨·코코넛·달맞이꽃·아보카도·아르간·동백씨 오일이 정교하게 어우러져, 자연에서 얻은 9가지 핵심 성분의 에너지가 입술 깊숙이 수분과 윤기를 채웁니다. 자연의 숨결과 과학의 정교함이 교차하는 순간, 입술은 고요하게 빛나는 본연의 품격을 되찾습니다.</p>
+      <a class="cta" href="#" data-hover="쇼핑하기" onclick="return false;">
+        <span>SHOP NOW</span>
+      </a>
+    </div>
+    <div class="social" aria-label="Social links">
+      <a class="social-link" href="#" aria-label="Facebook" onclick="return false;">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H7v3h3v7h3v-7h3l1-3h-4v-2c0-.6.4-1 1-1z"/>
+        </svg>
+      </a>
+      <a class="social-link" href="#" aria-label="Instagram" onclick="return false;">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zm10 2H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z"/>
+          <path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm0 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/>
+          <circle cx="17.2" cy="6.8" r="1.2"/>
+        </svg>
+      </a>
+      <a class="social-link" href="#" aria-label="Twitter" onclick="return false;">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M22 6.1a7.7 7.7 0 0 1-2.3.7 3.9 3.9 0 0 0 1.7-2.2 7.8 7.8 0 0 1-2.5 1 3.9 3.9 0 0 0-6.7 3.5A11 11 0 0 1 3 5.2a3.9 3.9 0 0 0 1.2 5.2 3.8 3.8 0 0 1-1.8-.5 3.9 3.9 0 0 0 3.1 3.8 3.9 3.9 0 0 1-1.8.1 3.9 3.9 0 0 0 3.6 2.7A7.8 7.8 0 0 1 2 18.1a11 11 0 0 0 6 1.8c7.3 0 11.4-6.2 11.4-11.6v-.5A8.3 8.3 0 0 0 22 6.1z"/>
+        </svg>
+      </a>
+      <a class="social-link" href="#" aria-label="YouTube" onclick="return false;">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M22 8.2a3 3 0 0 0-2.1-2.1C18.1 5.6 12 5.6 12 5.6s-6.1 0-7.9.5A3 3 0 0 0 2 8.2C1.6 10 1.6 12 1.6 12s0 2 .4 3.8a3 3 0 0 0 2.1 2.1c1.8.5 7.9.5 7.9.5s6.1 0 7.9-.5a3 3 0 0 0 2.1-2.1c.4-1.8.4-3.8.4-3.8s0-2-.4-3.8z"/>
+          <path d="M10 9.5 15.5 12 10 14.5z" fill="#fff"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+<script src="./js/dev-egg.js"></script>
+</body>
+</html>
