@@ -16,11 +16,6 @@ $(function () {
       $overlay.css('display', 'none');
     }, 560);
 
-    const firstProject = document.querySelector('.thumb-item');
-    if (firstProject && typeof firstProject.focus === 'function') {
-      firstProject.focus({ preventScroll: true });
-    }
-
     $(document).off('keydown.intro');
   }
 
