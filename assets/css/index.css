@@ -49,7 +49,7 @@ body.is-touch{
   border-bottom: 0;
   padding-bottom: 12px;
   height: 35vh;
-  align-items: center;
+  align-items: stretch;
   transition: opacity .34s var(--ease), filter .34s var(--ease);
 }
 
@@ -58,13 +58,16 @@ body.is-touch{
   padding: 8px 6px 10px;
   position:relative;
   flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 .card.intro{
-  flex: 1.4 1 0;
-  padding: 16px 12px 18px;
+  flex: 1 1 0;
+  padding: 8px 6px 10px;
 }
 .card h3{
-  margin:0 0 4px;
+  margin:0 0 8px;
   font-size: 17px;
   font-weight: 700;
   letter-spacing:.06em;
@@ -73,12 +76,18 @@ body.is-touch{
 .card p, .card li{
   margin:0;
   font-size: 17px;
-  line-height: 1.62;
+  line-height: 1.55;
   color: var(--muted);
   list-style:none;
   padding:0;
 }
-.card ul{margin:0;padding:0}
+.card ul{
+  margin:0;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  gap: 4px;
+}
 
 .dot{
   width:6px;height:6px;border-radius:999px;background:var(--accent);
@@ -249,9 +258,15 @@ body.is-touch{
 
 .thumbs{
   flex:1 1 auto;
-  overflow: visible;
+  overflow-x: hidden;
+  overflow-y: visible;
   padding-bottom: 26px;
   margin-top: 40px;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+.thumbs::-webkit-scrollbar{
+  display: none;
 }
 .thumbs-track{
   display:flex;
@@ -376,6 +391,45 @@ body.is-touch{
   border-color: rgba(255,92,122,.45);
 }
 
+.thumb-nav{
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: -2px;
+  z-index: 23;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+}
+.thumb-nav-btn{
+  pointer-events: auto;
+  appearance: none;
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,243,230,.45);
+  background: rgba(0,0,0,.38);
+  color: rgba(255,243,230,.95);
+  font-size: 24px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  transition: transform .2s var(--ease), border-color .2s var(--ease), background .2s var(--ease);
+}
+.thumb-nav-btn:hover{
+  transform: translateY(-2px);
+  border-color: rgba(255,176,32,.75);
+  background: rgba(0,0,0,.58);
+}
+.thumb-nav-btn:focus-visible{
+  outline: 2px solid rgba(255,176,32,.75);
+  outline-offset: 3px;
+}
+
 @keyframes thumb-slide{
   0%{transform: translateX(0)}
   100%{transform: translateX(calc(-1 * var(--thumb-distance, 0px)))}
@@ -397,20 +451,23 @@ body.is-touch{
   cursor: pointer;
   font-size: 16px;
   letter-spacing:.08em;
-  color: rgba(255,243,230,.9);
+  color: rgba(246,232,214,.92);
   padding: 20px 10px;
   border-radius: 14px;
-  border:1px solid rgba(255,243,230,.35);
-  background: rgba(255,176,32,.14);
-  box-shadow: 0 10px 24px rgba(255,176,32,.18);
+  border:1px solid rgba(201,165,124,.42);
+  background: linear-gradient(180deg, rgba(136,103,69,.44), rgba(96,73,50,.44));
+  box-shadow: 0 10px 24px rgba(20,15,11,.34), inset 0 1px 0 rgba(255,238,214,.08);
+  transition: transform .2s var(--ease), border-color .2s var(--ease), background .2s var(--ease), color .2s var(--ease);
 }
 .badge-btn:focus-visible{
-  outline: 2px solid rgba(255,176,32,.7);
+  outline: 2px solid rgba(201,165,124,.75);
   outline-offset: 4px;
 }
 .badge-btn:hover{
-  color: #fff3e6;
-  background: #ffb020;
+  color: rgba(255,244,226,.96);
+  border-color: rgba(224,186,141,.5);
+  background: linear-gradient(180deg, rgba(150,114,77,.48), rgba(108,82,56,.48));
+  transform: translateY(-1px);
 }
 
 .video-modal{

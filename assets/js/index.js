@@ -229,6 +229,8 @@ const toggleResumePanel = (forceOpen) => {
 const THUMB_SPEED = 90;
 const MIN_THUMB_DURATION = 12;
 const MAX_THUMB_DURATION = 36;
+const THUMB_ARROW_HOLD_MS = 520;
+let thumbArrowResumeTimer = 0;
 
 const updateThumbLoop = () => {
   const $track = $('#thumbTrack');
@@ -241,6 +243,63 @@ const updateThumbLoop = () => {
   $track.css('--thumb-duration', `${duration.toFixed(2)}s`);
 };
 
+const resolveThumbStep = ($track) => {
+  const $items = $track.children('.thumb-item');
+  const first = $items.get(0);
+  const second = $items.get(1);
+  if (!first) return 0;
+  if (second) return Math.abs(second.offsetLeft - first.offsetLeft);
+  return first.getBoundingClientRect().width;
+};
+
+const nudgeThumbLoop = (direction) => {
+  const $track = $('#thumbTrack');
+  if ($track.length === 0) return;
+
+  const track = $track[0];
+  const animation = track.getAnimations().find((item) => item.playState !== 'finished');
+  if (!animation) return;
+
+  const stepPx = resolveThumbStep($track);
+  if (!stepPx) return;
+
+  const computed = getComputedStyle(track);
+  const distance = Number.parseFloat(computed.getPropertyValue('--thumb-distance')) || (track.scrollWidth / 2);
+  if (!distance) return;
+
+  const timing = animation.effect && animation.effect.getTiming ? animation.effect.getTiming() : null;
+  const fallbackDuration = (Number.parseFloat(computed.getPropertyValue('--thumb-duration')) || 24) * 1000;
+  const loopDuration = typeof timing?.duration === 'number' ? timing.duration : fallbackDuration;
+  if (!loopDuration) return;
+
+  const delta = (stepPx / distance) * loopDuration * (direction > 0 ? 1 : -1);
+  const current = typeof animation.currentTime === 'number' ? animation.currentTime : 0;
+  let next = current + delta;
+  next = ((next % loopDuration) + loopDuration) % loopDuration;
+  animation.currentTime = next;
+};
+
+const moveThumbSlide = (direction) => {
+  const step = direction < 0 ? -1 : 1;
+  const $thumbRow = $('#thumbRow');
+  const $track = $('#thumbTrack');
+  if ($thumbRow.length === 0 || $track.length === 0) return;
+
+  const stepPx = resolveThumbStep($track);
+  if (!stepPx) return;
+
+  $track.children('.thumb-item').removeClass('is-selected');
+  if (document.body.classList.contains('is-touch')) {
+    $thumbRow[0].scrollBy({
+      left: stepPx * step,
+      behavior: 'smooth',
+    });
+    return;
+  }
+  nudgeThumbLoop(step);
+  holdThumbLoopAfterArrow();
+};
+
 const resumeThumbLoop = () => {
   const $track = $('#thumbTrack');
   if ($track.length === 0) return;
@@ -251,6 +310,17 @@ const pauseThumbLoop = () => {
   const $track = $('#thumbTrack');
   if ($track.length === 0) return;
   $track.css('animation-play-state', 'paused');
+};
+
+const holdThumbLoopAfterArrow = () => {
+  pauseThumbLoop();
+  if (thumbArrowResumeTimer) {
+    window.clearTimeout(thumbArrowResumeTimer);
+  }
+  thumbArrowResumeTimer = window.setTimeout(() => {
+    thumbArrowResumeTimer = 0;
+    resumeThumbLoop();
+  }, THUMB_ARROW_HOLD_MS);
 };
 
 let lastTouchY = 0;
@@ -293,6 +363,7 @@ $(function () {
   const $thumbTrack = $('#thumbTrack');
   if (!touchDevice && $thumbTrack.length && !$thumbTrack.data('looped')) {
     $thumbTrack.data('looped', true);
+    $thumbTrack.data('originalCount', $thumbTrack.children('.thumb-item').length);
     $thumbTrack.children().clone().appendTo($thumbTrack);
     updateThumbLoop();
   }
@@ -342,6 +413,9 @@ $(function () {
       });
     }
   }
+
+  $('#thumbPrev').on('click', () => moveThumbSlide(-1));
+  $('#thumbNext').on('click', () => moveThumbSlide(1));
 
   $('#previewVideo').on('error', handleVideoError);
   $('#imageModal').on('click', (event) => {
