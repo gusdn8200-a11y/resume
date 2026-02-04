@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KAUAI COFFEE | Island Archive</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/index.css" />
+  </head>
+  <body>
+    <div class="bg-layer" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <a class="brand" href="#home">
+        <img src="img/logo.png" alt="Kauai Coffee 로고" />
+        <span>Island Archive</span>
+      </a>
+      <nav class="main-nav" aria-label="주요 메뉴">
+        <a>커피</a>
+        <a>디카페인 커피</a>
+        <a>쿠키</a>
+        <a>BEST</a>
+        <a>카우아이섬 여행</a>
+        <a>커뮤니티</a>
+      </nav>
+      <div class="top-actions" aria-label="유저 메뉴">
+        <a class="login-btn" href="#" aria-label="로그인">로그인</a>
+        <a class="icon-btn" href="#shop" aria-label="위시리스트">
+          <img src="img/product_wish_before.png" alt="" />
+        </a>
+        <a class="icon-btn" href="#shop" aria-label="장바구니">
+          <img src="img/product_basket.png" alt="" />
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero reveal" id="home">
+        <div class="hero-visual">
+          <div class="hero-frame">
+            <img id="heroImage" src="img/s1.jpg" alt="카우아이 해변 풍경" />
+            <div class="hero-dots" id="heroDots" role="tablist" aria-label="메인 슬라이드">
+              <button class="dot active" data-src="img/s1.jpg" data-alt="카우아이 해변 풍경" data-position="50% 50%" aria-label="슬라이드 1"></button>
+              <button class="dot" data-src="img/s2.jpg" data-alt="카우아이 농장 풍경" data-position="50% 50%" aria-label="슬라이드 2"></button>
+              <button class="dot" data-src="img/s3.jpg" data-alt="카우아이 산악 풍경" data-position="50% 50%" aria-label="슬라이드 3"></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="story reveal" id="story">
+        <div class="section-head">
+          <p class="eyebrow">Origin Route</p>
+          <h2>원두가 컵에 닿기까지, 네 개의 섬 스테이지</h2>
+        </div>
+        <div class="story-grid">
+          <article class="story-card">
+            <img src="img/s2.png" alt="하와이 산지 풍경" />
+            <div>
+              <h3>01. Mountain Mist</h3>
+              <p>고지대 안개와 화산토가 만들어내는 과일향 중심의 산미 밸런스.</p>
+            </div>
+          </article>
+          <article class="story-card">
+            <img src="img/s3.png" alt="해안 풍경" />
+            <div>
+              <h3>02. Coastal Drying</h3>
+              <p>바닷바람을 타고 천천히 건조되어 단맛과 향의 레이어가 선명해집니다.</p>
+            </div>
+          </article>
+          <article class="story-card">
+            <img src="img/s4.png" alt="계곡 풍경" />
+            <div>
+              <h3>03. Valley Roast</h3>
+              <p>로스팅 곡선을 길게 가져가, 다크 초콜릿과 캐러멜 노트를 안정적으로 표현.</p>
+            </div>
+          </article>
+          <article class="story-card">
+            <img src="img/s5.png" alt="농장 풍경" />
+            <div>
+              <h3>04. Farm Dispatch</h3>
+              <p>수확 후 빠른 포장과 배송 동선으로 아로마 손실을 최소화합니다.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="collection reveal" id="shop">
+        <div class="section-head inline-head">
+          <div>
+            <p class="eyebrow">Bean Curation</p>
+            <h2>취향별로 빠르게 고르는 시그니처 셀렉션</h2>
+          </div>
+          <div class="filters" role="tablist" aria-label="원두 필터">
+            <button class="chip active" data-filter="all">All</button>
+            <button class="chip" data-filter="fruity">Fruity</button>
+            <button class="chip" data-filter="balanced">Balanced</button>
+            <button class="chip" data-filter="bold">Bold</button>
+            <button class="chip" data-filter="decaf">Decaf</button>
+          </div>
+        </div>
+
+        <div class="product-wall" id="productWall">
+          <article class="product-card tall" data-category="fruity">
+            <img src="img/c1.gif" alt="Island Breeze 원두" loading="lazy" />
+            <div class="product-copy">
+              <h3>Island Breeze</h3>
+              <p>파파야 · 재스민 · 라임 제스트</p>
+              <strong>₩39,000</strong>
+            </div>
+          </article>
+
+          <article class="product-card" data-category="balanced">
+            <img src="img/c2.gif" alt="Kauai Classic 원두" loading="lazy" />
+            <div class="product-copy">
+              <h3>Kauai Classic</h3>
+              <p>캐러멜 · 아몬드 · 브라운슈가</p>
+              <strong>₩35,000</strong>
+            </div>
+          </article>
+
+          <article class="product-card wide" data-category="bold">
+            <img src="img/c3.gif" alt="Volcanic Roast 원두" loading="lazy" />
+            <div class="product-copy">
+              <h3>Volcanic Roast</h3>
+              <p>다크초콜릿 · 토피 · 스모키 피니시</p>
+              <strong>₩42,000</strong>
+            </div>
+          </article>
+
+          <article class="product-card" data-category="balanced">
+            <img src="img/c4.gif" alt="Sunset House Blend" loading="lazy" />
+            <div class="product-copy">
+              <h3>Sunset House Blend</h3>
+              <p>오렌지 · 마카다미아 · 꿀</p>
+              <strong>₩37,000</strong>
+            </div>
+          </article>
+
+          <article class="product-card" data-category="decaf">
+            <img src="img/c5.gif" alt="Moonlight Decaf" loading="lazy" />
+            <div class="product-copy">
+              <h3>Moonlight Decaf</h3>
+              <p>코코아 · 시나몬 · 부드러운 바디</p>
+              <strong>₩36,000</strong>
+            </div>
+          </article>
+
+          <article class="product-card tall" data-category="bold">
+            <img src="img/c6.gif" alt="Royal Kona Dark" loading="lazy" />
+            <div class="product-copy">
+              <h3>Royal Kona Dark</h3>
+              <p>블랙베리 · 카카오닙 · 깊은 여운</p>
+              <strong>₩43,000</strong>
+            </div>
+          </article>
+
+          <article class="product-card" data-category="fruity">
+            <img src="img/c7.gif" alt="Aloha Morning" loading="lazy" />
+            <div class="product-copy">
+              <h3>Aloha Morning</h3>
+              <p>망고 · 시트러스 · 크리스프 산미</p>
+              <strong>₩34,000</strong>
+            </div>
+          </article>
+
+          <article class="product-card" data-category="balanced">
+            <img src="img/c8.gif" alt="Hanapepe Medium" loading="lazy" />
+            <div class="product-copy">
+              <h3>Hanapepe Medium</h3>
+              <p>비스킷 · 캐슈넛 · 깔끔한 끝맛</p>
+              <strong>₩33,000</strong>
+            </div>
+          </article>
+
+          <article class="product-card" data-category="bold">
+            <img src="img/c9.gif" alt="Midnight Estate" loading="lazy" />
+            <div class="product-copy">
+              <h3>Midnight Estate</h3>
+              <p>월넛 · 몰트 · 풍부한 바디</p>
+              <strong>₩41,000</strong>
+            </div>
+          </article>
+
+          <article class="product-card wide" data-category="fruity">
+            <img src="img/c10.gif" alt="Garden Bloom" loading="lazy" />
+            <div class="product-copy">
+              <h3>Garden Bloom</h3>
+              <p>플로럴 · 복숭아 · 화사한 단맛</p>
+              <strong>₩38,000</strong>
+            </div>
+          </article>
+
+          <article class="product-card" data-category="decaf">
+            <img src="img/c13.gif" alt="Quiet Island Decaf" loading="lazy" />
+            <div class="product-copy">
+              <h3>Quiet Island Decaf</h3>
+              <p>곡물 · 초콜릿 · 라운드 밸런스</p>
+              <strong>₩36,000</strong>
+            </div>
+          </article>
+
+          <article class="product-card" data-category="balanced">
+            <img src="img/c15.gif" alt="Signature Estate" loading="lazy" />
+            <div class="product-copy">
+              <h3>Signature Estate</h3>
+              <p>바닐라 · 헤이즐넛 · 크리미</p>
+              <strong>₩40,000</strong>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="lab reveal" id="lab">
+        <div class="lab-panel">
+          <div class="lab-head">
+            <p class="eyebrow">Blend Lab</p>
+            <h2>오늘의 무드를 고르면, 어울리는 원두를 제안해드릴게요.</h2>
+          </div>
+          <div class="lab-form">
+            <div class="lab-fields">
+              <label>
+                Mood
+                <select id="moodSelect">
+                  <option value="calm">차분하게 집중하고 싶어요</option>
+                  <option value="bright">상쾌하게 시작하고 싶어요</option>
+                  <option value="deep">진하고 묵직한 한 잔이 좋아요</option>
+                </select>
+              </label>
+              <label>
+                Aroma
+                <select id="aromaSelect">
+                  <option value="nutty">고소한 향</option>
+                  <option value="floral">꽃향 / 과일향</option>
+                  <option value="choco">초콜릿 계열</option>
+                </select>
+              </label>
+            </div>
+            <button id="recommendBtn" class="btn btn-primary" type="button">추천 받기</button>
+          </div>
+          <div class="recommend" id="recommendResult">
+            <p>추천 결과가 여기 표시됩니다.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="social reveal" id="social">
+        <div class="section-head">
+          <p class="eyebrow">Aloha Club</p>
+          <h2>원두 소식과 농장 스토리를 가장 먼저 받아보세요</h2>
+        </div>
+
+        <div class="social-layout">
+          <div class="social-gallery">
+            <img src="img/s1.png" alt="카우아이 해변" />
+            <img src="img/s5.png" alt="카우아이 농장" />
+            <img src="img/s3.png" alt="카우아이 산악 지형" />
+          </div>
+          <aside class="social-side">
+            <p>Follow Us</p>
+            <div class="social-icons">
+              <a href="#" aria-label="instagram"><img src="img/sns1.png" alt="" /></a>
+              <a href="#" aria-label="facebook"><img src="img/sns2.png" alt="" /></a>
+              <a href="#" aria-label="youtube"><img src="img/sns3.png" alt="" /></a>
+              <a href="#" aria-label="blog"><img src="img/sns4.png" alt="" /></a>
+            </div>
+            <form class="newsletter" action="#" method="post">
+              <label for="emailInput">Newsletter</label>
+              <input id="emailInput" type="email" placeholder="you@example.com" />
+              <button type="submit" class="btn btn-primary">구독 신청</button>
+            </form>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>KAUAI COFFEE ISLAND ARCHIVE</p>
+      <small>© 2026 Kauai Coffee Korea. Built with your image assets.</small>
+    </footer>
+
+    <script src="js/index.js"></script>
+  </body>
+</html>
