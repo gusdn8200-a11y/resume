@@ -163,38 +163,3 @@
 body.intro-lock .page{
   visibility: hidden;
 }
-
-@media (max-width: 720px){
-  .intro-word{
-    gap: 6px;
-    letter-spacing: .1em;
-  }
-  .intro-value-main{
-    font-size: 18px;
-  }
-  .intro-value-sub{
-    font-size: 14px;
-  }
-  .intro-enter{
-    padding: 15px 34px;
-    font-size: 14px;
-    min-width: 196px;
-  }
-  .intro-year{
-    right: 16px;
-    bottom: 14px;
-    font-size: 16px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce){
-  .intro-overlay{ transition:none; }
-  .intro-letter{
-    transition:none;
-    opacity:1;
-    transform:none;
-  }
-  .intro-enter{ transition:none; }
-  .intro-enter:hover,
-  .intro-enter:active{ transform:none; }
-}

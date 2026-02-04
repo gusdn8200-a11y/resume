@@ -150,7 +150,7 @@ body.is-touch{
   width: max-content;
   max-width: calc(100% - 40px);
   color: var(--fg);
-  font-size: clamp(28px, 3.6vw, 52px);
+  font-size: clamp(24px, 3vw, 44px);
   text-align:left;
   position: relative;
   left: var(--copy-slot);
@@ -593,98 +593,4 @@ body.is-touch{
   width: 100%;
   height: auto;
   display:block;
-}
-
-@media (max-width: 1700px){
-  .header{gap:4px; padding-bottom:8px}
-  .card{padding:6px 4px 8px}
-  .card h3{font-size:11px; margin-bottom:3px}
-  .card p, .card li{font-size:10px; line-height:1.55}
-  .avatar{width:32px;height:32px;font-size:10px}
-  .meta{margin-top:4px; gap:6px; font-size:9px}
-  .chip{padding:2px 5px}
-}
-
-@media (max-width: 980px){
-  .header{flex-wrap: wrap; gap:10px}
-  .card{flex: 1 1 calc(50% - 10px)}
-  .card:nth-child(1){flex-basis: 100%}
-  .hero{min-height: 460px}
-  .thumbs{margin-top: 0}
-  .drawer{
-    width: 100vw;
-    padding: 20px;
-  }
-  .drawer-close{
-    top: 14px;
-    left: 14px;
-  }
-}
-
-@media (max-width: 700px){
-  .page{height: 100svh; min-height: 100svh; padding: 18px 16px 10px}
-  .header{
-    display:grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: stretch;
-    gap: 12px;
-    height: auto;
-    padding-top: 8px;
-    padding-bottom: 8px;
-  }
-  .card,
-  .card.intro{
-    flex: initial;
-    padding: 10px 8px 12px;
-  }
-  .card h3{
-    font-size: 13px;
-    margin-bottom: 5px;
-  }
-  .card p,
-  .card li{
-    font-size: 12px;
-    line-height: 1.7;
-  }
-  .hero{
-    min-height: 128px;
-    padding-top: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-  }
-  .copy{
-    margin-top: 2px;
-    min-height: 5.6em;
-  }
-  .copy-line{
-    left: 0;
-    top: 0;
-    width: 100%;
-    max-width: 100%;
-    transition: opacity .34s cubic-bezier(.23,1,.32,1), transform .42s cubic-bezier(.23,1,.32,1), filter .42s cubic-bezier(.23,1,.32,1), top .34s cubic-bezier(.23,1,.32,1);
-  }
-  .copy-line.is-left{
-    top: 0;
-  }
-  .copy-line.is-center{
-    top: 1.5em;
-  }
-  .copy-line.is-right{
-    top: 3em;
-  }
-  .rail{
-    flex: 0 0 20vh;
-    padding: 28px 0 4px;
-    align-items: flex-start;
-  }
-  .thumbs{margin-top: 0; padding-bottom: 4px}
-  .scroll-gauge{
-    left: 12px;
-    top: 10px;
-    gap: 6px;
-  }
-  .scroll-gauge-track{
-    width: clamp(74px, 26vw, 104px);
-  }
 }
