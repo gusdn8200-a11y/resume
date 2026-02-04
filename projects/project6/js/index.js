@@ -4,11 +4,61 @@
   const dots = dotWrap ? [...dotWrap.querySelectorAll(".dot")] : [];
   const sliderFrame = heroImage?.closest(".hero-frame");
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const topbar = document.querySelector(".topbar");
+  const menuToggle = document.getElementById("menuToggle");
+  const mainNavMenu = document.getElementById("mainNavMenu");
+  const mobileMenuQuery = window.matchMedia("(max-width: 760px)");
   const fadeOutMs = reducedMotion ? 0 : 240;
   const slideIntervalMs = 5200;
   let slideIndex = 0;
   let timerId = null;
   let fadeTimerId = null;
+
+  const setMenuState = (isOpen) => {
+    if (!topbar || !menuToggle) return;
+    topbar.classList.toggle("nav-open", isOpen);
+    menuToggle.setAttribute("aria-expanded", String(isOpen));
+    menuToggle.setAttribute("aria-label", isOpen ? "메뉴 닫기" : "메뉴 열기");
+  };
+
+  if (topbar && menuToggle && mainNavMenu) {
+    menuToggle.addEventListener("click", () => {
+      const shouldOpen = !topbar.classList.contains("nav-open");
+      setMenuState(shouldOpen);
+    });
+
+    [...mainNavMenu.querySelectorAll("a")].forEach((link) => {
+      link.addEventListener("click", () => {
+        if (!mobileMenuQuery.matches) return;
+        setMenuState(false);
+      });
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!mobileMenuQuery.matches) return;
+      if (topbar.contains(event.target)) return;
+      setMenuState(false);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+      setMenuState(false);
+    });
+
+    const handleViewportChange = () => {
+      if (!mobileMenuQuery.matches) {
+        setMenuState(false);
+      }
+    };
+
+    if (typeof mobileMenuQuery.addEventListener === "function") {
+      mobileMenuQuery.addEventListener("change", handleViewportChange);
+    } else {
+      mobileMenuQuery.addListener(handleViewportChange);
+    }
+
+    setMenuState(false);
+  }
 
   const setActiveDot = (index) => {
     dots.forEach((dot, idx) => {

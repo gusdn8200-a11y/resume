@@ -20,13 +20,13 @@
         <img src="img/logo.png" alt="Kauai Coffee 로고" />
         <span>Island Archive</span>
       </a>
-      <nav class="main-nav" aria-label="주요 메뉴">
-        <a>커피</a>
-        <a>디카페인 커피</a>
-        <a>쿠키</a>
-        <a>BEST</a>
-        <a>카우아이섬 여행</a>
-        <a>커뮤니티</a>
+      <nav class="main-nav" id="mainNavMenu" aria-label="주요 메뉴">
+        <a href="#shop">커피</a>
+        <a href="#shop">디카페인 커피</a>
+        <a href="#shop">쿠키</a>
+        <a href="#shop">BEST</a>
+        <a href="#story">카우아이섬 여행</a>
+        <a href="#social">커뮤니티</a>
       </nav>
       <div class="top-actions" aria-label="유저 메뉴">
         <a class="login-btn" href="#" aria-label="로그인">로그인</a>
@@ -37,6 +37,18 @@
           <img src="img/product_basket.png" alt="" />
         </a>
       </div>
+      <button
+        class="menu-toggle"
+        id="menuToggle"
+        type="button"
+        aria-label="메뉴 열기"
+        aria-expanded="false"
+        aria-controls="mainNavMenu"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </header>
 
     <main>

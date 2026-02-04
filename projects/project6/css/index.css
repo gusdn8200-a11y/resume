@@ -73,6 +73,7 @@ main,
   position: sticky;
   top: 14px;
   z-index: 20;
+  overflow: visible;
   margin-top: 14px;
   padding: 0.8rem 1rem;
   display: flex;
@@ -139,6 +140,48 @@ main,
   display: flex;
   align-items: center;
   gap: 0.45rem;
+}
+
+.menu-toggle {
+  display: none;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid rgba(14, 95, 103, 0.24);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.62);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.menu-toggle:hover {
+  transform: translateY(-1px);
+  border-color: rgba(14, 95, 103, 0.45);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.menu-toggle span {
+  width: 16px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--accent-strong);
+  transition: transform 0.24s ease, opacity 0.24s ease;
+}
+
+.topbar.nav-open .menu-toggle span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.topbar.nav-open .menu-toggle span:nth-child(2) {
+  opacity: 0;
+}
+
+.topbar.nav-open .menu-toggle span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
 }
 
 .login-btn {
@@ -777,9 +820,10 @@ section {
 @media (max-width: 760px) {
   .topbar {
     top: 8px;
-    flex-wrap: wrap;
-    gap: 0.35rem 0.8rem;
+    flex-wrap: nowrap;
+    gap: 0.35rem;
     border-radius: 16px;
+    padding: 0.55rem 0.7rem;
   }
 
   main {
@@ -790,36 +834,76 @@ section {
     padding-inline: 0.55rem;
   }
 
+  .brand {
+    gap: 0.45rem;
+  }
+
+  .brand img {
+    width: 44px;
+    height: 44px;
+  }
+
+  .brand span {
+    font-size: 0.72rem;
+  }
+
+  .menu-toggle {
+    display: inline-flex;
+    flex-shrink: 0;
+  }
+
   .main-nav {
-    order: 3;
-    width: 100%;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 0.35rem 0.5rem;
-    font-size: 0.82rem;
-    padding-top: 0.4rem;
+    position: absolute;
+    left: 0.55rem;
+    right: 0.55rem;
+    top: calc(100% + 0.5rem);
+    z-index: 5;
+    border: 1px solid rgba(6, 55, 65, 0.2);
+    border-radius: 14px;
+    box-shadow: 0 16px 28px rgba(6, 55, 65, 0.18);
+    background: rgba(246, 242, 232, 0.96);
+    backdrop-filter: blur(10px);
+    padding: 0.65rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+  }
+
+  .topbar.nav-open .main-nav {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
   }
 
   .main-nav a {
-    padding: 0.3rem 0.55rem;
-    border-radius: 999px;
+    padding: 0.58rem 0.72rem;
+    border-radius: 10px;
     border: 1px solid rgba(6, 55, 65, 0.14);
-    background: rgba(255, 255, 255, 0.54);
+    background: rgba(255, 255, 255, 0.72);
+  }
+
+  .main-nav a::after {
+    display: none;
   }
 
   .top-actions {
     margin-left: auto;
-  }
-
-  .icon-btn {
-    width: 36px;
-    height: 36px;
+    gap: 0.34rem;
   }
 
   .login-btn {
-    height: 36px;
-    padding: 0 0.72rem;
-    font-size: 0.75rem;
+    display: none;
+  }
+
+  .icon-btn {
+    width: 34px;
+    height: 34px;
   }
 
   section {
