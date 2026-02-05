@@ -153,6 +153,113 @@
 
   const filterButtons = [...document.querySelectorAll(".chip")];
   const productCards = [...document.querySelectorAll(".product-card")];
+  const hoverlessQuery = window.matchMedia("(hover: none)");
+  const packSizes = ["180g", "200g", "225g", "250g", "340g", "454g"];
+  const originMixes = [
+    "하와이 카우아이 70% · 콜롬비아 30%",
+    "과테말라 55% · 브라질 45%",
+    "에티오피아 60% · 코스타리카 40%",
+    "하와이 코나 40% · 페루 60%",
+    "케냐 50% · 콜롬비아 50%",
+    "브라질 65% · 엘살바도르 35%",
+    "코스타리카 45% · 과테말라 55%",
+  ];
+  const processTypes = [
+    "Washed",
+    "Natural",
+    "Honey",
+    "Swiss Water Decaf",
+    "Semi-Washed",
+    "Anaerobic Natural",
+  ];
+  const roastProfiles = ["Light-Medium", "Medium", "Medium-Dark", "Dark"];
+
+  const createMeta = (index) => ({
+    size: packSizes[(index * 5 + 2) % packSizes.length],
+    origin: originMixes[(index * 3 + 1) % originMixes.length],
+    process: processTypes[(index * 4 + 2) % processTypes.length],
+    roast: roastProfiles[(index * 2 + 1) % roastProfiles.length],
+    lot: `KA-${2026 + (index % 2)}-${String(18 + index).padStart(2, "0")}`,
+  });
+
+  const setupProductFlipCards = () => {
+    productCards.forEach((card, index) => {
+      if (card.querySelector(".product-card-inner")) return;
+
+      const front = document.createElement("div");
+      front.className = "product-face product-front";
+      [...card.children].forEach((child) => front.appendChild(child));
+
+      const name = front.querySelector(".product-copy h3")?.textContent?.trim() || `Selection ${index + 1}`;
+      const flavor =
+        front.querySelector(".product-copy p")?.textContent?.trim() ||
+        "향미 노트는 시즌별로 변동될 수 있습니다.";
+      const meta = createMeta(index);
+
+      const back = document.createElement("div");
+      back.className = "product-face product-back";
+      back.innerHTML = `
+        <p class="meta-eyebrow">Island Lot Memo</p>
+        <h3>${name}</h3>
+        <ul class="product-meta" aria-label="${name} 상세 정보">
+          <li><span>용량</span><strong>${meta.size}</strong></li>
+          <li><span>원산지</span><strong>${meta.origin}</strong></li>
+          <li><span>가공</span><strong>${meta.process}</strong></li>
+          <li><span>로스팅</span><strong>${meta.roast}</strong></li>
+          <li><span>LOT</span><strong>${meta.lot}</strong></li>
+        </ul>
+        <p class="meta-note">${flavor}</p>
+      `;
+
+      const inner = document.createElement("div");
+      inner.className = "product-card-inner";
+      inner.append(front, back);
+      card.append(inner);
+
+      card.setAttribute("tabindex", "0");
+      card.setAttribute("role", "button");
+      card.setAttribute("aria-label", `${name} 카드 정보 뒤집기`);
+    });
+  };
+
+  const closeFlippedCards = () => {
+    productCards.forEach((card) => card.classList.remove("is-flipped"));
+  };
+
+  setupProductFlipCards();
+
+  productCards.forEach((card) => {
+    card.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        card.classList.remove("is-flipped");
+        card.blur();
+        return;
+      }
+
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        card.classList.toggle("is-flipped");
+      }
+    });
+
+    card.addEventListener("click", (event) => {
+      if (!hoverlessQuery.matches) return;
+      event.preventDefault();
+
+      const shouldFlip = !card.classList.contains("is-flipped");
+      closeFlippedCards();
+      if (shouldFlip) {
+        card.classList.add("is-flipped");
+      }
+    });
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!hoverlessQuery.matches) return;
+    const clickedInsideCard = productCards.some((card) => card.contains(event.target));
+    if (clickedInsideCard) return;
+    closeFlippedCards();
+  });
 
   filterButtons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -160,6 +267,7 @@
 
       filterButtons.forEach((item) => item.classList.remove("active"));
       button.classList.add("active");
+      closeFlippedCards();
 
       productCards.forEach((card) => {
         const matched = filter === "all" || card.dataset.category === filter;
