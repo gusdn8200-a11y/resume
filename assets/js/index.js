@@ -232,11 +232,27 @@ const MAX_THUMB_DURATION = 36;
 const THUMB_ARROW_HOLD_MS = 520;
 let thumbArrowResumeTimer = 0;
 
+const resolveThumbDistance = ($track) => {
+  const track = $track[0];
+  if (!track) return 0;
+
+  const $items = $track.children('.thumb-item');
+  const first = $items.get(0);
+  const originalCount = Number($track.data('originalCount')) || 0;
+  const firstClone = originalCount > 0 ? $items.get(originalCount) : null;
+
+  if (first && firstClone) {
+    const cloneOffset = firstClone.offsetLeft - first.offsetLeft;
+    if (cloneOffset > 0) return cloneOffset;
+  }
+
+  return track.scrollWidth / 2;
+};
+
 const updateThumbLoop = () => {
   const $track = $('#thumbTrack');
   if ($track.length === 0) return;
-  const track = $track[0];
-  const distance = track.scrollWidth / 2;
+  const distance = resolveThumbDistance($track);
   if (!distance) return;
   const duration = clamp(distance / THUMB_SPEED, MIN_THUMB_DURATION, MAX_THUMB_DURATION);
   $track.css('--thumb-distance', `${distance.toFixed(2)}px`);
