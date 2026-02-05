@@ -16,6 +16,13 @@ const copyState = {
   endTimer: null,
 };
 
+const mobileSequenceState = {
+  enabled: false,
+  intent: 0,
+  revealCount: 0,
+  total: 0,
+};
+
 const PREVIEW_HOVER_DELAY_MS = 160;
 let previewTimer = 0;
 
@@ -23,6 +30,7 @@ const COPY_SCROLL_THRESHOLD = 120;
 const COPY_TOUCH_THRESHOLD = 90;
 const COPY_SWAP_MS = 220;
 const COPY_TRANSITION_MS = 560;
+const MOBILE_MAX_WIDTH = 700;
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 const isTouchDevice = () => (
@@ -30,11 +38,29 @@ const isTouchDevice = () => (
   navigator.maxTouchPoints > 0 ||
   window.matchMedia('(hover: none) and (pointer: coarse)').matches
 );
+const isMobileViewport = () => window.matchMedia(`(max-width: ${MOBILE_MAX_WIDTH}px)`).matches;
+const hasInteractiveLayerOpen = () => (
+  $('#imageModal').hasClass('is-open') ||
+  $('#resumePanel').hasClass('is-open') ||
+  $('#videoModal').hasClass('is-open') ||
+  $('#introOverlay').hasClass('is-active')
+);
 
 const resolveCopyProgress = (stageValue) => {
   const stageSpan = copyTexts.length - 1;
   if (stageSpan <= 0) return 0;
   return clamp(stageValue / stageSpan, 0, 1);
+};
+
+const resolveSequenceProgress = (stageValue = copyState.stage, revealValue = mobileSequenceState.revealCount) => {
+  if (!mobileSequenceState.enabled) {
+    return resolveCopyProgress(stageValue);
+  }
+  const copySpan = Math.max(copyTexts.length - 1, 0);
+  const totalSpan = copySpan + mobileSequenceState.total;
+  if (totalSpan <= 0) return 0;
+  const current = clamp(stageValue + revealValue, 0, totalSpan);
+  return current / totalSpan;
 };
 
 const updateCopyGauge = (progressValue) => {
@@ -64,7 +90,7 @@ const setupCopyStage = () => {
   copyState.$gaugeFill = $('#scrollGaugeFill');
   copyState.$line.html(copyTexts[0]);
   updateCopyPosition();
-  updateCopyGauge(resolveCopyProgress(copyState.stage));
+  updateCopyGauge(resolveSequenceProgress(copyState.stage));
 };
 
 const changeCopyStage = (nextStage) => {
@@ -84,7 +110,7 @@ const changeCopyStage = (nextStage) => {
     copyState.stage = stage;
     copyState.$line.html(copyTexts[stage]);
     updateCopyPosition();
-    updateCopyGauge(resolveCopyProgress(copyState.stage));
+    updateCopyGauge(resolveSequenceProgress(copyState.stage, mobileSequenceState.revealCount));
     requestAnimationFrame(() => {
       if (copyState.$line) copyState.$line.removeClass('is-switch');
     });
@@ -179,6 +205,103 @@ const setActiveThumb = (target) => {
   $items.removeClass('is-selected');
   if (target) {
     $(target).addClass('is-selected');
+  }
+};
+
+const getPrimaryThumbItems = () => {
+  const $track = $('#thumbTrack');
+  if ($track.length === 0) return $();
+  const totalChildren = $track.children('.thumb-item').length;
+  const originalCount = Number($track.data('originalCount')) || totalChildren;
+  return $track.children('.thumb-item').slice(0, originalCount);
+};
+
+const updateMobileReveal = (nextCount) => {
+  const $items = getPrimaryThumbItems();
+  mobileSequenceState.total = $items.length;
+  const revealCount = clamp(nextCount, 0, mobileSequenceState.total);
+  mobileSequenceState.revealCount = revealCount;
+
+  $items.each((index, item) => {
+    const isRevealed = index < revealCount;
+    item.classList.toggle('is-revealed', isRevealed);
+    if (!isRevealed) {
+      item.classList.remove('is-selected');
+    }
+  });
+
+  if (revealCount > 0) {
+    setActiveThumb($items.get(revealCount - 1));
+  } else {
+    setActiveThumb(null);
+  }
+
+  updateCopyGauge(resolveSequenceProgress(copyState.stage, mobileSequenceState.revealCount));
+};
+
+const setMobileSequenceMode = (enabled) => {
+  mobileSequenceState.enabled = enabled;
+  mobileSequenceState.intent = 0;
+  document.body.classList.toggle('is-mobile-sequence', enabled);
+
+  if (enabled) {
+    updateMobileReveal(0);
+    return;
+  }
+
+  const $items = getPrimaryThumbItems();
+  mobileSequenceState.total = $items.length;
+  mobileSequenceState.revealCount = mobileSequenceState.total;
+  $items.removeClass('is-revealed');
+  if ($items.length) {
+    setActiveThumb($items.get(0));
+  }
+  updateCopyGauge(resolveCopyProgress(copyState.stage));
+};
+
+const syncMobileSequenceMode = () => {
+  const shouldEnable = document.body.classList.contains('is-touch') && isMobileViewport();
+  if (shouldEnable === mobileSequenceState.enabled) return;
+  setMobileSequenceMode(shouldEnable);
+};
+
+const stepMobileSequence = (direction) => {
+  if (copyState.isTransitioning) return;
+
+  if (direction > 0) {
+    if (copyState.stage < copyTexts.length - 1) {
+      changeCopyStage(copyState.stage + 1);
+      return;
+    }
+    if (mobileSequenceState.revealCount < mobileSequenceState.total) {
+      updateMobileReveal(mobileSequenceState.revealCount + 1);
+    }
+    return;
+  }
+
+  if (mobileSequenceState.revealCount > 0) {
+    updateMobileReveal(mobileSequenceState.revealCount - 1);
+    return;
+  }
+
+  if (copyState.stage > 0) {
+    changeCopyStage(copyState.stage - 1);
+  }
+};
+
+const queueMobileSequenceByDelta = (delta, threshold) => {
+  if (!mobileSequenceState.enabled) return;
+  if (!Number.isFinite(delta) || Math.abs(delta) < 1) return;
+
+  mobileSequenceState.intent = clamp(mobileSequenceState.intent + delta, -threshold, threshold);
+  if (mobileSequenceState.intent >= threshold) {
+    mobileSequenceState.intent = 0;
+    stepMobileSequence(1);
+    return;
+  }
+  if (mobileSequenceState.intent <= -threshold) {
+    mobileSequenceState.intent = 0;
+    stepMobileSequence(-1);
   }
 };
 
@@ -297,6 +420,10 @@ const nudgeThumbLoop = (direction) => {
 
 const moveThumbSlide = (direction) => {
   const step = direction < 0 ? -1 : 1;
+  if (mobileSequenceState.enabled) {
+    stepMobileSequence(step);
+    return;
+  }
   const $thumbRow = $('#thumbRow');
   const $track = $('#thumbTrack');
   if ($thumbRow.length === 0 || $track.length === 0) return;
@@ -343,9 +470,17 @@ let lastTouchY = 0;
 
 const handleWheel = (event) => {
   if (!copyState.$line) return;
-  event.preventDefault();
+  if (hasInteractiveLayerOpen()) return;
   const delta = event.originalEvent.deltaY;
   if (!Number.isFinite(delta) || Math.abs(delta) < 1) return;
+
+  if (mobileSequenceState.enabled) {
+    event.preventDefault();
+    queueMobileSequenceByDelta(delta, COPY_TOUCH_THRESHOLD);
+    return;
+  }
+
+  event.preventDefault();
   queueCopyByDelta(delta, COPY_SCROLL_THRESHOLD);
 };
 
@@ -354,10 +489,12 @@ const handleTouchStart = (event) => {
   if (!touches || touches.length === 0) return;
   lastTouchY = touches[0].clientY;
   copyState.intent = 0;
+  mobileSequenceState.intent = 0;
 };
 
 const handleTouchMove = (event) => {
-  if (!copyState.$line) return;
+  if (!copyState.$line || !mobileSequenceState.enabled) return;
+  if (hasInteractiveLayerOpen()) return;
   const touches = event.originalEvent.touches;
   if (!touches || touches.length === 0) return;
   const currentY = touches[0].clientY;
@@ -365,7 +502,7 @@ const handleTouchMove = (event) => {
   lastTouchY = currentY;
   if (Math.abs(delta) < 1) return;
   event.preventDefault();
-  queueCopyByDelta(delta, COPY_TOUCH_THRESHOLD);
+  queueMobileSequenceByDelta(delta, COPY_TOUCH_THRESHOLD);
 };
 
 $(function () {
@@ -386,6 +523,9 @@ $(function () {
   if ($thumbTrack.length) {
     setActiveThumb($thumbTrack.find('.thumb-item').first());
   }
+
+  mobileSequenceState.total = getPrimaryThumbItems().length;
+  syncMobileSequenceMode();
 
   const $thumbRow = $('#thumbRow');
   if ($thumbRow.length) {
@@ -447,10 +587,11 @@ $(function () {
     $(window).on('wheel', handleWheel);
   }
   $(window).on('touchstart', handleTouchStart);
-  if (!touchDevice) {
-    $(window).on('touchmove', handleTouchMove);
-  }
-  $(window).on('load resize', updateThumbLoop);
+  $(window).on('touchmove', handleTouchMove);
+  $(window).on('load resize orientationchange', () => {
+    updateThumbLoop();
+    syncMobileSequenceMode();
+  });
   $(window).on('focus pageshow', () => {
     const active = document.activeElement;
     if (active && active.closest && active.closest('#thumbRow')) {
