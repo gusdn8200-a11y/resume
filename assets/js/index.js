@@ -15,11 +15,8 @@ const copyState = {
   swapTimer: null,
   endTimer: null,
 };
-
-const mobileSequenceState = {
-  enabled: false,
-  intent: 0,
-  revealCount: 0,
+const touchSlideState = {
+  index: 0,
   total: 0,
 };
 
@@ -30,7 +27,6 @@ const COPY_SCROLL_THRESHOLD = 120;
 const COPY_TOUCH_THRESHOLD = 90;
 const COPY_SWAP_MS = 220;
 const COPY_TRANSITION_MS = 560;
-const MOBILE_MAX_WIDTH = 700;
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 const isTouchDevice = () => (
@@ -38,7 +34,6 @@ const isTouchDevice = () => (
   navigator.maxTouchPoints > 0 ||
   window.matchMedia('(hover: none) and (pointer: coarse)').matches
 );
-const isMobileViewport = () => window.matchMedia(`(max-width: ${MOBILE_MAX_WIDTH}px)`).matches;
 const hasInteractiveLayerOpen = () => (
   $('#imageModal').hasClass('is-open') ||
   $('#resumePanel').hasClass('is-open') ||
@@ -50,17 +45,6 @@ const resolveCopyProgress = (stageValue) => {
   const stageSpan = copyTexts.length - 1;
   if (stageSpan <= 0) return 0;
   return clamp(stageValue / stageSpan, 0, 1);
-};
-
-const resolveSequenceProgress = (stageValue = copyState.stage, revealValue = mobileSequenceState.revealCount) => {
-  if (!mobileSequenceState.enabled) {
-    return resolveCopyProgress(stageValue);
-  }
-  const copySpan = Math.max(copyTexts.length - 1, 0);
-  const totalSpan = copySpan + mobileSequenceState.total;
-  if (totalSpan <= 0) return 0;
-  const current = clamp(stageValue + revealValue, 0, totalSpan);
-  return current / totalSpan;
 };
 
 const updateCopyGauge = (progressValue) => {
@@ -90,7 +74,7 @@ const setupCopyStage = () => {
   copyState.$gaugeFill = $('#scrollGaugeFill');
   copyState.$line.html(copyTexts[0]);
   updateCopyPosition();
-  updateCopyGauge(resolveSequenceProgress(copyState.stage));
+  updateCopyGauge(resolveCopyProgress(copyState.stage));
 };
 
 const changeCopyStage = (nextStage) => {
@@ -110,7 +94,7 @@ const changeCopyStage = (nextStage) => {
     copyState.stage = stage;
     copyState.$line.html(copyTexts[stage]);
     updateCopyPosition();
-    updateCopyGauge(resolveSequenceProgress(copyState.stage, mobileSequenceState.revealCount));
+    updateCopyGauge(resolveCopyProgress(copyState.stage));
     requestAnimationFrame(() => {
       if (copyState.$line) copyState.$line.removeClass('is-switch');
     });
@@ -208,101 +192,54 @@ const setActiveThumb = (target) => {
   }
 };
 
-const getPrimaryThumbItems = () => {
-  const $track = $('#thumbTrack');
-  if ($track.length === 0) return $();
-  const totalChildren = $track.children('.thumb-item').length;
-  const originalCount = Number($track.data('originalCount')) || totalChildren;
-  return $track.children('.thumb-item').slice(0, originalCount);
+const getTouchThumbItems = () => $('#thumbTrack').children('.thumb-item');
+
+const normalizeSlideIndex = (value, total) => {
+  if (total <= 0) return 0;
+  return ((value % total) + total) % total;
 };
 
-const updateMobileReveal = (nextCount) => {
-  const $items = getPrimaryThumbItems();
-  mobileSequenceState.total = $items.length;
-  const revealCount = clamp(nextCount, 0, mobileSequenceState.total);
-  mobileSequenceState.revealCount = revealCount;
+const syncTouchSlideState = () => {
+  if (!document.body.classList.contains('is-touch')) return;
+  const $row = $('#thumbRow');
+  const $items = getTouchThumbItems();
+  if ($row.length === 0 || $items.length === 0) return;
+
+  let closestIndex = 0;
+  let closestDistance = Number.POSITIVE_INFINITY;
+  const currentLeft = $row[0].scrollLeft;
 
   $items.each((index, item) => {
-    const isRevealed = index < revealCount;
-    item.classList.toggle('is-revealed', isRevealed);
-    if (!isRevealed) {
-      item.classList.remove('is-selected');
+    const distance = Math.abs(item.offsetLeft - currentLeft);
+    if (distance < closestDistance) {
+      closestDistance = distance;
+      closestIndex = index;
     }
   });
 
-  if (revealCount > 0) {
-    setActiveThumb($items.get(revealCount - 1));
-  } else {
-    setActiveThumb(null);
-  }
-
-  updateCopyGauge(resolveSequenceProgress(copyState.stage, mobileSequenceState.revealCount));
+  touchSlideState.index = closestIndex;
+  touchSlideState.total = $items.length;
+  setActiveThumb($items.get(closestIndex));
 };
 
-const setMobileSequenceMode = (enabled) => {
-  mobileSequenceState.enabled = enabled;
-  mobileSequenceState.intent = 0;
-  document.body.classList.toggle('is-mobile-sequence', enabled);
+const moveTouchSlide = (direction) => {
+  const $row = $('#thumbRow');
+  const $items = getTouchThumbItems();
+  if ($row.length === 0 || $items.length === 0) return;
 
-  if (enabled) {
-    updateMobileReveal(0);
-    return;
-  }
+  touchSlideState.total = $items.length;
+  const isForwardLoop = direction > 0 && touchSlideState.index >= touchSlideState.total - 1;
+  const isBackwardLoop = direction < 0 && touchSlideState.index <= 0;
+  const nextIndex = normalizeSlideIndex(touchSlideState.index + direction, touchSlideState.total);
+  const target = $items.get(nextIndex);
+  if (!target) return;
 
-  const $items = getPrimaryThumbItems();
-  mobileSequenceState.total = $items.length;
-  mobileSequenceState.revealCount = mobileSequenceState.total;
-  $items.removeClass('is-revealed');
-  if ($items.length) {
-    setActiveThumb($items.get(0));
-  }
-  updateCopyGauge(resolveCopyProgress(copyState.stage));
-};
-
-const syncMobileSequenceMode = () => {
-  const shouldEnable = document.body.classList.contains('is-touch') && isMobileViewport();
-  if (shouldEnable === mobileSequenceState.enabled) return;
-  setMobileSequenceMode(shouldEnable);
-};
-
-const stepMobileSequence = (direction) => {
-  if (copyState.isTransitioning) return;
-
-  if (direction > 0) {
-    if (copyState.stage < copyTexts.length - 1) {
-      changeCopyStage(copyState.stage + 1);
-      return;
-    }
-    if (mobileSequenceState.revealCount < mobileSequenceState.total) {
-      updateMobileReveal(mobileSequenceState.revealCount + 1);
-    }
-    return;
-  }
-
-  if (mobileSequenceState.revealCount > 0) {
-    updateMobileReveal(mobileSequenceState.revealCount - 1);
-    return;
-  }
-
-  if (copyState.stage > 0) {
-    changeCopyStage(copyState.stage - 1);
-  }
-};
-
-const queueMobileSequenceByDelta = (delta, threshold) => {
-  if (!mobileSequenceState.enabled) return;
-  if (!Number.isFinite(delta) || Math.abs(delta) < 1) return;
-
-  mobileSequenceState.intent = clamp(mobileSequenceState.intent + delta, -threshold, threshold);
-  if (mobileSequenceState.intent >= threshold) {
-    mobileSequenceState.intent = 0;
-    stepMobileSequence(1);
-    return;
-  }
-  if (mobileSequenceState.intent <= -threshold) {
-    mobileSequenceState.intent = 0;
-    stepMobileSequence(-1);
-  }
+  touchSlideState.index = nextIndex;
+  setActiveThumb(target);
+  $row[0].scrollTo({
+    left: target.offsetLeft,
+    behavior: (isForwardLoop || isBackwardLoop) ? 'auto' : 'smooth',
+  });
 };
 
 const handleThumbLeave = () => {
@@ -420,25 +357,19 @@ const nudgeThumbLoop = (direction) => {
 
 const moveThumbSlide = (direction) => {
   const step = direction < 0 ? -1 : 1;
-  if (mobileSequenceState.enabled) {
-    stepMobileSequence(step);
-    return;
-  }
   const $thumbRow = $('#thumbRow');
   const $track = $('#thumbTrack');
   if ($thumbRow.length === 0 || $track.length === 0) return;
+
+  if (document.body.classList.contains('is-touch')) {
+    moveTouchSlide(step);
+    return;
+  }
 
   const stepPx = resolveThumbStep($track);
   if (!stepPx) return;
 
   $track.children('.thumb-item').removeClass('is-selected');
-  if (document.body.classList.contains('is-touch')) {
-    $thumbRow[0].scrollBy({
-      left: stepPx * step,
-      behavior: 'smooth',
-    });
-    return;
-  }
   nudgeThumbLoop(step);
   holdThumbLoopAfterArrow();
 };
@@ -467,18 +398,13 @@ const holdThumbLoopAfterArrow = () => {
 };
 
 let lastTouchY = 0;
+let touchScrollSyncFrame = 0;
 
 const handleWheel = (event) => {
   if (!copyState.$line) return;
   if (hasInteractiveLayerOpen()) return;
   const delta = event.originalEvent.deltaY;
   if (!Number.isFinite(delta) || Math.abs(delta) < 1) return;
-
-  if (mobileSequenceState.enabled) {
-    event.preventDefault();
-    queueMobileSequenceByDelta(delta, COPY_TOUCH_THRESHOLD);
-    return;
-  }
 
   event.preventDefault();
   queueCopyByDelta(delta, COPY_SCROLL_THRESHOLD);
@@ -489,11 +415,10 @@ const handleTouchStart = (event) => {
   if (!touches || touches.length === 0) return;
   lastTouchY = touches[0].clientY;
   copyState.intent = 0;
-  mobileSequenceState.intent = 0;
 };
 
 const handleTouchMove = (event) => {
-  if (!copyState.$line || !mobileSequenceState.enabled) return;
+  if (!copyState.$line) return;
   if (hasInteractiveLayerOpen()) return;
   const touches = event.originalEvent.touches;
   if (!touches || touches.length === 0) return;
@@ -502,7 +427,7 @@ const handleTouchMove = (event) => {
   lastTouchY = currentY;
   if (Math.abs(delta) < 1) return;
   event.preventDefault();
-  queueMobileSequenceByDelta(delta, COPY_TOUCH_THRESHOLD);
+  queueCopyByDelta(delta, COPY_TOUCH_THRESHOLD);
 };
 
 $(function () {
@@ -523,14 +448,18 @@ $(function () {
   if ($thumbTrack.length) {
     setActiveThumb($thumbTrack.find('.thumb-item').first());
   }
-
-  mobileSequenceState.total = getPrimaryThumbItems().length;
-  syncMobileSequenceMode();
+  if (touchDevice && $thumbTrack.length) {
+    touchSlideState.total = $thumbTrack.children('.thumb-item').length;
+    touchSlideState.index = 0;
+  }
 
   const $thumbRow = $('#thumbRow');
   if ($thumbRow.length) {
     $thumbRow.on('pointerenter focusin click', '.thumb-item', function () {
       setActiveThumb(this);
+      if (touchDevice) {
+        touchSlideState.index = $(this).index();
+      }
     });
 
     if (!touchDevice) {
@@ -567,6 +496,14 @@ $(function () {
           resumeThumbLoop();
         }
       });
+    } else {
+      $thumbRow.on('scroll', () => {
+        if (touchScrollSyncFrame) return;
+        touchScrollSyncFrame = window.requestAnimationFrame(() => {
+          touchScrollSyncFrame = 0;
+          syncTouchSlideState();
+        });
+      });
     }
   }
 
@@ -585,12 +522,15 @@ $(function () {
 
   if (!touchDevice) {
     $(window).on('wheel', handleWheel);
+    $(window).on('touchmove', handleTouchMove);
   }
   $(window).on('touchstart', handleTouchStart);
-  $(window).on('touchmove', handleTouchMove);
   $(window).on('load resize orientationchange', () => {
     updateThumbLoop();
-    syncMobileSequenceMode();
+    if (touchDevice) {
+      touchSlideState.total = $('#thumbTrack').children('.thumb-item').length;
+      syncTouchSlideState();
+    }
   });
   $(window).on('focus pageshow', () => {
     const active = document.activeElement;
