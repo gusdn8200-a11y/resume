@@ -86,6 +86,12 @@
       </div>
     </main>
 
+    <div class="badge-wrap badge-wrap--left">
+      <button class="badge-btn badge-btn--ps" id="psToggle" type="button" aria-controls="psPanel" aria-expanded="false">
+        포<br>토<br>샵
+      </button>
+    </div>
+
     <div class="badge-wrap">
       <button class="badge-btn" id="badgeToggle" type="button" aria-controls="resumePanel" aria-expanded="false">
         이<br>력<br>서
@@ -202,6 +208,46 @@
       <img id="previewImage" alt="preview" />
     </div>
   </div>
+
+  <div class="drawer-backdrop" id="psBackdrop" aria-hidden="true"></div>
+  <aside class="drawer drawer--left" id="psPanel" aria-hidden="true">
+    <button class="drawer-close" type="button" aria-label="Close photoshop panel">✖</button>
+    <div class="drawer-body drawer-body--ps">
+      <div class="ps-gallery">
+        <section class="ps-group" aria-label="Photoshop set 1">
+          <img class="ps-main" src="./poto/1.png" alt="Photoshop main 1" loading="lazy">
+          <div class="ps-sub">
+            <img src="./poto/1_1.png" alt="Photoshop detail 1-1" loading="lazy">
+            <img src="./poto/1_2.png" alt="Photoshop detail 1-2" loading="lazy">
+            <img src="./poto/1_3.png" alt="Photoshop detail 1-3" loading="lazy">
+          </div>
+        </section>
+        <section class="ps-group" aria-label="Photoshop set 2">
+          <img class="ps-main" src="./poto/2.png" alt="Photoshop main 2" loading="lazy">
+          <div class="ps-sub">
+            <img src="./poto/2_1.png" alt="Photoshop detail 2-1" loading="lazy">
+            <img src="./poto/2_2.png" alt="Photoshop detail 2-2" loading="lazy">
+            <img src="./poto/2_3.png" alt="Photoshop detail 2-3" loading="lazy">
+          </div>
+        </section>
+        <section class="ps-group" aria-label="Photoshop set 3">
+          <img class="ps-main" src="./poto/3.png" alt="Photoshop main 3" loading="lazy">
+          <div class="ps-sub">
+            <img src="./poto/3_1.png" alt="Photoshop detail 3-1" loading="lazy">
+            <img src="./poto/3_2.png" alt="Photoshop detail 3-2" loading="lazy">
+            <img src="./poto/3_3.png" alt="Photoshop detail 3-3" loading="lazy">
+          </div>
+        </section>
+        <section class="ps-group" aria-label="Photoshop set 4">
+          <img class="ps-main" src="./poto/4.png" alt="Photoshop main 4" loading="lazy">
+          <div class="ps-sub">
+            <img src="./poto/4_1.png" alt="Photoshop detail 4-1" loading="lazy">
+            <img src="./poto/4_2.png" alt="Photoshop detail 4-2" loading="lazy">
+          </div>
+        </section>
+      </div>
+    </div>
+  </aside>
 
   <div class="drawer-backdrop" id="resumeBackdrop" aria-hidden="true"></div>
   <aside class="drawer" id="resumePanel" aria-hidden="true">

@@ -37,6 +37,7 @@ const isTouchDevice = () => (
 const hasInteractiveLayerOpen = () => (
   $('#imageModal').hasClass('is-open') ||
   $('#resumePanel').hasClass('is-open') ||
+  $('#psPanel').hasClass('is-open') ||
   $('#videoModal').hasClass('is-open') ||
   $('#introOverlay').hasClass('is-active')
 );
@@ -275,15 +276,39 @@ const closeImageModal = () => {
   $previewImage.attr('src', '');
 };
 
+const setDrawerState = ($panel, $backdrop, $toggle, willOpen) => {
+  if ($panel.length === 0) return;
+  $panel.toggleClass('is-open', willOpen).attr('aria-hidden', String(!willOpen));
+  if ($backdrop && $backdrop.length) {
+    $backdrop.toggleClass('is-open', willOpen).attr('aria-hidden', String(!willOpen));
+  }
+  if ($toggle && $toggle.length) {
+    $toggle.attr('aria-expanded', String(willOpen));
+  }
+};
+
 const toggleResumePanel = (forceOpen) => {
   const $panel = $('#resumePanel');
   const $backdrop = $('#resumeBackdrop');
   const $toggle = $('#badgeToggle');
   if ($panel.length === 0) return;
   const willOpen = typeof forceOpen === 'boolean' ? forceOpen : !$panel.hasClass('is-open');
-  $panel.toggleClass('is-open', willOpen).attr('aria-hidden', String(!willOpen));
-  $backdrop.toggleClass('is-open', willOpen).attr('aria-hidden', String(!willOpen));
-  $toggle.attr('aria-expanded', String(willOpen));
+  if (willOpen) {
+    setDrawerState($('#psPanel'), $('#psBackdrop'), $('#psToggle'), false);
+  }
+  setDrawerState($panel, $backdrop, $toggle, willOpen);
+};
+
+const togglePsPanel = (forceOpen) => {
+  const $panel = $('#psPanel');
+  const $backdrop = $('#psBackdrop');
+  const $toggle = $('#psToggle');
+  if ($panel.length === 0) return;
+  const willOpen = typeof forceOpen === 'boolean' ? forceOpen : !$panel.hasClass('is-open');
+  if (willOpen) {
+    setDrawerState($('#resumePanel'), $('#resumeBackdrop'), $('#badgeToggle'), false);
+  }
+  setDrawerState($panel, $backdrop, $toggle, willOpen);
 };
 
 const THUMB_SPEED = 90;
@@ -517,6 +542,8 @@ $(function () {
     }
   });
   $('#imageModal').on('click', '.image-close', closeImageModal);
+  $('#psToggle').on('click', () => togglePsPanel());
+  $('#psPanel').on('click', '.drawer-close', () => togglePsPanel(false));
   $('#badgeToggle').on('click', () => toggleResumePanel());
   $('#resumePanel').on('click', '.drawer-close', () => toggleResumePanel(false));
 
@@ -549,6 +576,7 @@ $(function () {
       clearPreviewTimer();
       closePreview();
       closeImageModal();
+      togglePsPanel(false);
       toggleResumePanel(false);
     }
   });
