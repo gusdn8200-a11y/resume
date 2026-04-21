@@ -588,7 +588,7 @@ mark { background: none; color: var(--accent); font-weight: 600; }
   align-items: baseline;
   gap: 0.04em;
 }
-.hero__type-text { color: var(--text); min-width: 2ch; }
+.hero__type-text { color: var(--text); }
 .hero__type-caret {
   display: inline-block;
   width: 3px;
